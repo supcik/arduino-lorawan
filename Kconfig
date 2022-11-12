@@ -1,0 +1,25 @@
+menu "Arduino LoRaWAN"
+
+choice ARDUINO_LORAWAN_NETWORK
+    prompt "LoRaWAN Network"
+    config ARDUINO_LORAWAN_CFG_NETWORK_TTN
+        bool "The Things Network"
+    config ARDUINO_LORAWAN_CFG_NETWORK_ACTILITY
+        bool "Actility"
+    config ARDUINO_LORAWAN_CFG_NETWORK_HELIUM
+        bool "Helium"
+    config ARDUINO_LORAWAN_CFG_NETWORK_MACHINEQ
+        bool "machineQ"
+    config ARDUINO_LORAWAN_CFG_NETWORK_SENET
+        bool "Senet"
+    config ARDUINO_LORAWAN_CFG_NETWORK_SENRA
+        bool "Senra"
+    config ARDUINO_LORAWAN_CFG_NETWORK_SWISSCOM
+        bool "Swisscom"
+    config ARDUINO_LORAWAN_CFG_NETWORK_CHIRPSTACK
+        bool "ChirpStack.io"
+    config ARDUINO_LORAWAN_CFG_NETWORK_GENERIC
+        bool "Generic"
+endchoice
+
+endmenu

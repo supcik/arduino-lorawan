@@ -101,7 +101,9 @@ Arduino_LoRaWAN::BuildSessionState(
     State.V1.Channels.Header.Tag = State.V1.Channels.Header.kEUlike;
     State.V1.Channels.Header.Size = sizeof(State.V1.Channels.EUlike);
     State.V1.Channels.EUlike.clearAll();
-    constexpr unsigned maxCh = MAX_CHANNELS < State.V1.Channels.EUlike.nCh ? MAX_CHANNELS : State.V1.Channels.EUlike.nCh;
+    constexpr unsigned maxCh = MAX_CHANNELS < State.V1.Channels.EUlike.nCh
+        ? (unsigned)MAX_CHANNELS
+        : State.V1.Channels.EUlike.nCh;
     State.V1.Channels.EUlike.ChannelMap = LMIC.channelMap;
 #if ARDUINO_LMIC_VERSION_COMPARE_GE(ARDUINO_LMIC_VERSION, ARDUINO_LMIC_VERSION_CALC(3,99,0,1))
     State.V1.Channels.EUlike.ChannelShuffleMap = LMIC.channelShuffleMap;
@@ -367,7 +369,8 @@ Arduino_LoRaWAN::ApplySessionState(
 #endif
     for (unsigned ch = 0; ch < MAX_CHANNELS; ++ch)
         {
-        if ((resetMap & (decltype(resetMap)(1) << ch)) == 0)
+        //if ((resetMap & (decltype(resetMap)(1) << ch)) == 0)
+        if ((resetMap & (1 << ch)) == 0)
             {
             // copy data -- note that the saved band number is encoded
             LMIC_setupChannel(

@@ -22,6 +22,33 @@ Author:
 # include <mcciadk_env.h>
 #endif
 
+
+#ifdef ESP_PLATFORM
+/* Espressif IoT Development Framework (ESP-IDF) */
+#include "sdkconfig.h"
+
+#if defined(CONFIG_ARDUINO_LORAWAN_CFG_NETWORK_TTN)
+#define ARDUINO_LMIC_CFG_NETWORK_TTN 1
+#elif defined(CONFIG_ARDUINO_LORAWAN_CFG_NETWORK_ACTILITY)
+#define ARDUINO_LMIC_CFG_NETWORK_ACTILITY 1
+#elif defined(CONFIG_ARDUINO_LORAWAN_CFG_NETWORK_HELIUM)
+#define ARDUINO_LMIC_CFG_NETWORK_HELIUM 1
+#elif defined(CONFIG_ARDUINO_LORAWAN_CFG_NETWORK_MACHINEQ)
+#define ARDUINO_LMIC_CFG_NETWORK_MACHINEQ 1
+#elif defined(CONFIG_ARDUINO_LORAWAN_CFG_NETWORK_SENET)
+#define ARDUINO_LMIC_CFG_NETWORK_SENET 1
+#elif defined(CONFIG_ARDUINO_LORAWAN_CFG_NETWORK_SENRA)
+#define ARDUINO_LMIC_CFG_NETWORK_SENRA 1
+#elif defined(CONFIG_ARDUINO_LORAWAN_CFG_NETWORK_SWISSCOM)
+#define ARDUINO_LMIC_CFG_NETWORK_SWISSCOM 1
+#elif defined(CONFIG_ARDUINO_LORAWAN_CFG_NETWORK_CHIRPSTACK)
+#define ARDUINO_LMIC_CFG_NETWORK_CHIRPSTACK 1
+#elif defined(CONFIG_ARDUINO_LORAWAN_CFG_NETWORK_GENERIC)
+#define ARDUINO_LMIC_CFG_NETWORK_GENERIC 1
+#endif
+
+#endif  // ESP_PLATFORM
+
 #include <cstring>
 #include <arduino_lmic_hal_configuration.h>
 
@@ -368,6 +395,7 @@ public:
                         chPtr[0] = uint8_t(reducedFreq >> 16);
                         chPtr[1] = uint8_t(reducedFreq >> 8);
                         chPtr[2] = uint8_t(reducedFreq);
+                        return true;
                         }
 
                 /// \brief clear all entries in the channel table.
@@ -962,7 +990,10 @@ private:
         /// \brief the internal copy of the session state, used to
         ///     reduce the number of saves to a minimum. It's initially
         ///     marked as "not valid".
-        SessionState m_savedSessionState { .Header = { .Tag = kSessionStateTag_Null } };
+        SessionState m_savedSessionState { .Header = { 
+                .Tag = kSessionStateTag_Null,
+                .Size = 0
+        } };
         };
 
 /****************************************************************************\
